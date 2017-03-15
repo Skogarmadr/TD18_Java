@@ -1,41 +1,37 @@
 package ch.arc.menu;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import javax.swing.SwingUtilities;
+
 import javax.swing.SwingWorker;
 
-public class MyWorker extends SwingWorker<String, Integer>
+
+public class MyWorker extends SwingWorker<Integer, Integer>
 {
+    String pathFolder;
 
-    public MyWorker()
+    public MyWorker(String pathFolder)
     {
-        // TODO Auto-generated constructor stub
+        this.pathFolder = pathFolder;
     }
-    
+
     @Override
-    protected void process(List<Integer> chunks)
+    protected Integer doInBackground() throws Exception
     {
-        
-        System.out.println("Process - is edt " + SwingUtilities.isEventDispatchThread());
-        for(Integer jInteger : chunks)
+        int count = 0;
+        try
         {
-            System.out.println("Process " + jInteger);
+            count = (int) (Files.find(Paths.get(pathFolder), 1, // how deep do we want to descend
+                    (path, attributes) -> attributes.isDirectory())
+                    .count() - 1); // '-1' because '/tmp' is also counted in
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
-    }
 
-    @Override
-    protected void done()
-    {
-        System.out.println("DOOOONEE");
-        System.out.println("Process - is edt " + SwingUtilities.isEventDispatchThread());
-    }
-    
-    @Override
-    protected String doInBackground() throws Exception
-    {
-        // TODO Auto-generated method stub
-        return null;
+        return count;
     }
     
     

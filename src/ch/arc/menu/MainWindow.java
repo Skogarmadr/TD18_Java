@@ -25,6 +25,7 @@ public class MainWindow extends JFrame
     private JButton btnStart = new JButton("start");
     private JLabel labelSize = new JLabel();
     private JProgressBar progressBar = new JProgressBar();
+    private Integer integer;
     
     private String path;
     
@@ -134,7 +135,17 @@ public class MainWindow extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             //fullProgessBar();
-            MyWorker worker = new MyWorker();
+            MyWorker worker = new MyWorker(textField.getText());
+            try
+            {
+                integer = worker.doInBackground();
+                labelSize.setText(Integer.toString(integer));
+            } catch (Exception e1)
+            {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            
             
             
         }
